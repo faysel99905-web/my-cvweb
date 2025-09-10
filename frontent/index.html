@@ -345,31 +345,15 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form id="contact-form" action="https://formspree.io/f/xpwnqkqk" method="POST" target="_blank">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" required>
-                            <label for="name">Your Name</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" required>
-                            <label for="email">Your Email</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="subject" name="subject" required>
-                            <label for="subject">Subject</label>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                            <label for="message">Your Message</label>
-                        </div>
-                        <!-- Hidden fields for Formspree configuration -->
-                        <input type="hidden" name="_to" value="faysel.99905@gmail.com">
-                        <input type="hidden" name="_subject" value="New Contact Form Submission from CV Website">
-                        <input type="hidden" name="_replyto" value="">
-                        <input type="hidden" name="_cc" value="">
-                        <input type="hidden" name="_next" value="contact-success.html">
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
+                    <div class="email-contact">
+                        <h3>Get In Touch</h3>
+                        <p>Ready to work together or have a question? Send me an email directly!</p>
+                        <a href="mailto:faysel.99905@gmail.com?subject=Hello from your CV Website&body=Hi Fissal,%0D%0A%0D%0AI came across your CV website and would like to get in touch.%0D%0A%0D%0ABest regards," class="btn btn-primary email-btn">
+                            <i class="fas fa-envelope"></i>
+                            Send Email
+                        </a>
+                        <p class="email-note">Clicking this button will open your default email client</p>
+                    </div>
                 </div>
             </div>
         </div>
