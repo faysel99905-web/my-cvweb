@@ -1064,6 +1064,7 @@ section {
 
 [data-theme="dark"] .github-link {
   background: #0076b523;
+  
   border-color: #444;
   color: white;
 }
