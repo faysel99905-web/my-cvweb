@@ -1,0 +1,24 @@
+# Ignore embedded git repositories
+faisal-cv/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore node_modules if any
+node_modules/
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
