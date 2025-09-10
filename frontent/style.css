@@ -1028,25 +1028,34 @@ section {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: #333;
+  color: white;
   text-decoration: none;
   font-weight: 500;
   transition: all var(--transition-normal);
+  font-size: var(--font-size-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
-  background: rgba(51, 51, 51, 0.1);
-  border: 1px solid rgba(51, 51, 51, 0.2);
+  background: #333;
+  border: 1px solid #333;
+  cursor: pointer;
 }
 
 .github-link:hover {
-  background: #333;
+  background: #555;
+  border-color: #555;
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.github-link:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .github-link i {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
+  color: inherit;
 }
 
 .github-link span {
@@ -1054,13 +1063,14 @@ section {
 }
 
 [data-theme="dark"] .github-link {
-  color: #f0f0f0;
-  background: rgba(51, 51, 51, 0.15);
-  border-color: rgba(51, 51, 51, 0.3);
+  background: #0076b523;
+  border-color: #444;
+  color: white;
 }
 
 [data-theme="dark"] .github-link:hover {
-  background: #333;
+  background: #0077b5;
+    border-color: #666;
   color: white;
 }
 
