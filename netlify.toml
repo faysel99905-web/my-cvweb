@@ -1,14 +1,30 @@
+# Netlify Configuration for Plain HTML Website
+# This file configures Netlify deployment settings for a static HTML website
+# Created to fix 404 errors during deployment
+
 [build]
-  # No build command needed for plain HTML
+  # No build command needed for plain HTML websites
+  # Plain HTML sites don't require compilation, bundling, or transpilation
   command = ""
-  # Publish from the root directory
+  
+  # Publish from the root directory (where index.html is located)
+  # This tells Netlify to serve files directly from the repository root
   publish = "."
 
 [build.environment]
-  # No special environment variables needed
+  # No special environment variables needed for plain HTML
+  # Unlike React/Vue/Angular projects, no NODE_VERSION or build tools required
 
-# Optional: Add redirects for better routing
+# Redirect configuration for single-page application behavior
+# This ensures all routes serve the main index.html file
+# Fixes 404 errors when users navigate directly to URLs like /about, /contact, etc.
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  from = "/*"           # Catch all routes
+  to = "/index.html"    # Serve the main HTML file
+  status = 200          # Return 200 (success) instead of 404 (not found)
+
+# Why these settings were chosen:
+# 1. Empty build command: Plain HTML doesn't need npm run build or similar
+# 2. Root publish directory: index.html is in the root, not in a 'dist' or 'build' folder
+# 3. Redirects: Ensures client-side routing works properly for single-page behavior
+# 4. This configuration is specifically for static HTML/CSS/JS websites
