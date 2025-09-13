@@ -16,6 +16,12 @@ class CVWebsite {
         this.setupScrollAnimations();
         this.setupFormHandling();
         this.setupAccessibility();
+        this.setupNavbarScroll(); // Initialize navbar as fixed from the start
+        
+        // Ensure 3D model backgrounds are applied after page load
+        setTimeout(() => {
+            this.updateSplineBackgrounds(this.currentTheme);
+        }, 1000);
     }
 
     setupEventListeners() {
@@ -49,8 +55,8 @@ class CVWebsite {
             }
         });
 
-        // Navbar scroll effect
-        this.setupNavbarScroll();
+        // Navbar scroll effect is now handled in init()
+        this.setupActiveNavHighlighting();
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => this.handleKeyboardNavigation(e));
@@ -74,6 +80,9 @@ class CVWebsite {
                 icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
         }
+        
+        // Update 3D model backgrounds to match theme
+        this.updateSplineBackgrounds(theme);
     }
 
     toggleMobileMenu() {
@@ -110,8 +119,6 @@ class CVWebsite {
     }
 
     setupNavbarScroll() {
-        let lastScrollTop = 0;
-        let ticking = false;
         const navbar = document.getElementById('navbar');
         
         // Check if navbar exists
@@ -120,34 +127,75 @@ class CVWebsite {
             return;
         }
         
+        let lastScrollY = window.scrollY;
+        let isFixed = false;
+        
         const handleScroll = () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const currentScrollY = window.scrollY;
+            const navbarHeight = navbar.offsetHeight;
             
-            if (scrollTop > 100) { // Show navbar after scrolling down 100px
-                if (scrollTop > lastScrollTop && scrollTop > 200) {
-                    // Scrolling down - hide navbar
-                    navbar.classList.remove('scrolled-up');
-                    navbar.classList.add('scrolled');
-                } else {
-                    // Scrolling up - show navbar
-                    navbar.classList.remove('scrolled');
-                    navbar.classList.add('scrolled-up');
-                }
-            } else {
-                // At top of page - show navbar normally
-                navbar.classList.remove('scrolled', 'scrolled-up');
+            // When scrolling down and past the navbar's original position
+            if (currentScrollY > navbarHeight && !isFixed) {
+                navbar.classList.add('fixed');
+                document.body.classList.add('navbar-fixed');
+                isFixed = true;
+            }
+            // When scrolling back up to the top
+            else if (currentScrollY <= navbarHeight && isFixed) {
+                navbar.classList.remove('fixed');
+                document.body.classList.remove('navbar-fixed');
+                isFixed = false;
             }
             
-            lastScrollTop = scrollTop;
-            ticking = false;
+            lastScrollY = currentScrollY;
         };
+        
+        // Throttle scroll events for better performance
+        const throttledScroll = Utils.throttle(handleScroll, 16); // ~60fps
+        window.addEventListener('scroll', throttledScroll);
+        
+        // Initial check
+        handleScroll();
+    }
 
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(handleScroll);
-                ticking = true;
+    setupActiveNavHighlighting() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        
+        // Function to update active nav link
+        const updateActiveNav = () => {
+            let current = '';
+            const scrollPosition = window.scrollY + 150; // Offset for better detection
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            // Special case for home section
+            if (window.scrollY < 200) {
+                current = 'home';
             }
-        });
+            
+            // Update nav links
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === `#${current}` || (current === 'home' && href === '#home')) {
+                    link.classList.add('active');
+                }
+            });
+        };
+        
+        // Update on scroll
+        window.addEventListener('scroll', Utils.throttle(updateActiveNav, 50));
+        
+        // Update on page load
+        setTimeout(updateActiveNav, 100);
     }
 
     setupScrollAnimations() {
@@ -297,6 +345,69 @@ class CVWebsite {
         }
     }
 
+    updateSplineBackgrounds(theme) {
+        // Wait a bit for Spline viewers to be fully loaded
+        setTimeout(() => {
+            // Get all spline viewers
+            const splineViewers = document.querySelectorAll('spline-viewer');
+            
+            splineViewers.forEach(viewer => {
+                // Force update the background style with multiple approaches
+                if (theme === 'dark') {
+                    viewer.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+                    viewer.style.backgroundColor = '#0f172a';
+                    viewer.setAttribute('style', viewer.getAttribute('style') + '; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important; background-color: #0f172a !important;');
+                } else {
+                    viewer.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)';
+                    viewer.style.backgroundColor = '#ffffff';
+                    viewer.setAttribute('style', viewer.getAttribute('style') + '; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important; background-color: #ffffff !important;');
+                }
+                
+                // Also try to update any canvas elements inside
+                const canvas = viewer.querySelector('canvas');
+                if (canvas) {
+                    if (theme === 'dark') {
+                        canvas.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+                        canvas.style.backgroundColor = '#0f172a';
+                    } else {
+                        canvas.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)';
+                        canvas.style.backgroundColor = '#ffffff';
+                    }
+                }
+            });
+            
+            // Special handling for hero spline (first one, background overlay)
+            const heroSpline = document.querySelector('body > spline-viewer');
+            if (heroSpline) {
+                if (theme === 'dark') {
+                    heroSpline.style.background = 'linear-gradient(135deg, rgba(15, 23, 42, 0.1) 0%, rgba(30, 41, 59, 0.1) 100%)';
+                    heroSpline.style.backgroundColor = 'rgba(15, 23, 42, 0.1)';
+                } else {
+                    heroSpline.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(248, 250, 252, 0.1) 100%)';
+                    heroSpline.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                }
+            }
+            
+            // Special handling for skills section spline
+            const skillsSpline = document.querySelector('.skills spline-viewer');
+            if (skillsSpline) {
+                if (theme === 'dark') {
+                    skillsSpline.style.background = '#0f172a';
+                    skillsSpline.style.backgroundColor = '#0f172a';
+                    skillsSpline.style.border = '1px solid #334155';
+                    skillsSpline.style.borderRadius = '0.5rem';
+                    skillsSpline.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.4)';
+                } else {
+                    skillsSpline.style.background = '#ffffff';
+                    skillsSpline.style.backgroundColor = '#ffffff';
+                    skillsSpline.style.border = '1px solid #e2e8f0';
+                    skillsSpline.style.borderRadius = '0.5rem';
+                    skillsSpline.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                }
+            }
+        }, 100);
+    }
+
     setupAccessibility() {
         // Add skip link
         const skipLink = document.createElement('a');
@@ -437,6 +548,12 @@ document.addEventListener('DOMContentLoaded', () => {
         new CVWebsite();
         new PerformanceOptimizer();
         
+        // Initialize PDF viewer
+        window.pdfViewer = new PDFViewer();
+        
+        // Initialize Certificate viewer
+        window.certificateViewer = new CertificateViewer();
+        
         // Add loading complete class for any loading animations
         document.body.classList.add('loaded');
         
@@ -459,7 +576,163 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// PDF Viewer functionality
+class PDFViewer {
+    constructor() {
+        this.modal = document.getElementById('pdf-modal');
+        this.iframe = document.getElementById('pdf-viewer');
+        this.fallback = document.querySelector('.pdf-fallback');
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        // Close modal when clicking outside
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.close();
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal && this.modal.classList.contains('show')) {
+                this.close();
+            }
+        });
+
+        // Check if PDF can be displayed
+        this.checkPDFSupport();
+    }
+
+    open() {
+        if (this.modal) {
+            this.modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus management for accessibility
+            const closeBtn = this.modal.querySelector('.pdf-close-btn');
+            if (closeBtn) {
+                closeBtn.focus();
+            }
+        }
+    }
+
+    close() {
+        if (this.modal) {
+            this.modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    checkPDFSupport() {
+        // Check if browser supports PDF viewing
+        const supportsPDF = this.iframe && 
+            (navigator.mimeTypes && navigator.mimeTypes['application/pdf']) ||
+            (window.chrome && window.chrome.webstore);
+
+        if (!supportsPDF && this.fallback) {
+            this.fallback.style.display = 'block';
+            if (this.iframe) {
+                this.iframe.style.display = 'none';
+            }
+        }
+    }
+}
+
+// Global functions for PDF viewer
+function openPDFViewer() {
+    if (window.pdfViewer) {
+        window.pdfViewer.open();
+    }
+}
+
+function closePDFViewer() {
+    if (window.pdfViewer) {
+        window.pdfViewer.close();
+    }
+}
+
+// Certificate Viewer functionality
+class CertificateViewer {
+    constructor() {
+        this.modal = document.getElementById('certificate-modal');
+        this.iframe = document.getElementById('certificate-viewer');
+        this.fallback = document.querySelector('#certificate-modal .pdf-fallback');
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        // Close modal when clicking outside
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.close();
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal && this.modal.classList.contains('show')) {
+                this.close();
+            }
+        });
+
+        // Check if PDF can be displayed
+        this.checkPDFSupport();
+    }
+
+    open() {
+        if (this.modal) {
+            this.modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus management for accessibility
+            const closeBtn = this.modal.querySelector('.pdf-close-btn');
+            if (closeBtn) {
+                closeBtn.focus();
+            }
+        }
+    }
+
+    close() {
+        if (this.modal) {
+            this.modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    checkPDFSupport() {
+        // Check if browser supports PDF viewing
+        const supportsPDF = this.iframe && 
+            (navigator.mimeTypes && navigator.mimeTypes['application/pdf']) ||
+            (window.chrome && window.chrome.webstore);
+
+        if (!supportsPDF && this.fallback) {
+            this.fallback.style.display = 'block';
+            if (this.iframe) {
+                this.iframe.style.display = 'none';
+            }
+        }
+    }
+}
+
+// Global functions for Certificate viewer
+function openCertificateViewer() {
+    if (window.certificateViewer) {
+        window.certificateViewer.open();
+    }
+}
+
+function closeCertificateViewer() {
+    if (window.certificateViewer) {
+        window.certificateViewer.close();
+    }
+}
+
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { CVWebsite, Utils, PerformanceOptimizer };
+    module.exports = { CVWebsite, Utils, PerformanceOptimizer, PDFViewer, CertificateViewer };
 }

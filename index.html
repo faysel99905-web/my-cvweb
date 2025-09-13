@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
+    
+    <script style="display: none;margin-top: 0px;" type="module" src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/StYndF9kblel09sL/scene.splinecode"></spline-viewer>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-text">Fissal Ali</span>
+                <span class="logo-text">Faisal Ali Ajeel</span>
             </div>
             <div class="nav-menu" id="nav-menu">
                 <a href="#home" class="nav-link">Home</a>
@@ -42,18 +46,26 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="hero-title">
-                        <span class="name">Fissal Ali</span>
+                        <span class="name">Fissal Ali Ajeel</span>
                     </h1>
                     <h2 class="hero-subtitle">
-                        Computer Systems Student | Web Developer | Future Cybersecurity Specialist
+                        Computer Systems Engineering Student | Web Developer | Future Cybersecurity Specialist
                     </h2>
                     <p class="hero-description">
                         A motivated Computer Systems student passionate about cybersecurity, web development, and creating innovative digital solutions. Eager to learn and grow in the tech industry.
                     </p>
                     <div class="hero-buttons">
                         <a href="#contact" class="btn btn-primary">Contact Me</a>
-                        <a href="#" class="btn btn-secondary">Download CV</a>
+                        <a href="assets/Fissal_Ali_CV.pdf" class="btn btn-secondary" download="Faisal-Ali-CV.pdf">
+                            <i class="fas fa-download"></i>
+                            Download CV
+                        </a>
+                        <button class="btn btn-outline" onclick="openPDFViewer()">
+                            <i class="fas fa-eye"></i>
+                            View CV
+                        </button>
                     </div>
+                    
                 </div>
                 <div class="hero-visual">
                     <div class="laptop-container">
@@ -89,7 +101,7 @@
                                     <span class="output">Studying at Abdullah Al-Salem University</span>
                                 </div>
                                 <div class="code-line">
-                                    <span class="output">MAJOR: Computer Systems</span>
+                                    <span class="output">MAJOR: Computer Systems Engineering</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="output success">✓ Compiled successfully!</span>
@@ -119,11 +131,11 @@
                 <div class="about-stats">
                     <div class="stat">
                         <h3>Projects Completed</h3>
-                        <span class="stat-number">3+</span>
+                        <span class="stat-number">4+</span>
                     </div>
                     <div class="stat">
                         <h3>Technologies Learned</h3>
-                        <span class="stat-number">10+</span>
+                        <span class="stat-number">15+</span>
                     </div>
                     <div class="stat">
                         <h3>Certificates Earned</h3>
@@ -142,7 +154,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>Bachelor's in Computer Systems</h3>
+                        <h3>Bachelor's in Computer Systems Engineering</h3>
                         <h4>Abdullah Al-Salem University</h4>
                         <span class="timeline-date">In Progress</span>
                         <p>
@@ -159,6 +171,12 @@
                         <p>
                             Completed a comprehensive web development program covering HTML, CSS, JavaScript, and modern web development practices.
                         </p>
+                        <div class="certificate-actions">
+                            <button class="btn btn-outline" onclick="openCertificateViewer()">
+                                <i class="fas fa-certificate"></i>
+                                View Certificate
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,6 +197,9 @@
                         <span class="skill-tag">HTML</span>
                         <span class="skill-tag">CSS</span>
                         <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Flask</span>
+                        <span class="skill-tag">3D integration Model</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -189,8 +210,8 @@
                     <div class="skill-tags">
                         <span class="skill-tag">soon</span>
                         <!-- <span class="skill-tag">Penetration Testing</span>
-                        <span class="skill-tag">Ethical Hacking</span>
-                    </div> -->
+                        <span class="skill-tag">Ethical Hacking</span> -->
+                    </div>
                 </div>
                 <div class="skill-category">
                     <div class="skill-icon">
@@ -201,6 +222,18 @@
                         <span class="skill-tag">soon</span>
                         <!-- <span class="skill-tag">Flutter</span>
                         <span class="skill-tag">Cross-platform</span> -->
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI/ML & Data</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Hugging Face</span>
+                        <span class="skill-tag">OCR</span>
+                        <span class="skill-tag">Document Processing</span>
+                        <span class="skill-tag">AI Integration</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -223,6 +256,31 @@
         <div class="container">
             <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>a5t9r.com - Universal Document QA & Summarizer</h3>
+                        <p>
+                            A comprehensive document processing web application that enables users to upload and analyze various document formats (PDF, Excel, Word, Images) with AI-powered question-answering and summarization capabilities. Features multi-format support, OCR integration, and successful cloud deployment.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">AI/ML</span>
+                            <span class="tech-tag">Hugging Face</span>
+                            <span class="tech-tag">OCR</span>
+                            <span class="tech-tag">Cloud Deployment</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Project</a>
+                            <a href="https://github.com/faysel99905-web" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="project-card">
                     <div class="project-image">
                         <div class="project-placeholder">
@@ -270,6 +328,33 @@
                     </div>
                 </div>
                 <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Madaar Student Club Website</h3>
+                        <p>
+                            A comprehensive university club platform built to manage student memberships, events, courses, and resources. Features dark/light mode, multilingual support (Arabic/English with RTL), responsive design, and Apple Wallet digital membership cards with real-time preview and .pkpass generation.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript ES6+</span>
+                            <span class="tech-tag">Apple Wallet</span>
+                            <span class="tech-tag">Responsive Design</span>
+                            <span class="tech-tag">RTL Support</span>
+                            <span class="tech-tag">Glassmorphism</span>
+                            <span class="tech-tag">PWA</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://madaar-club.netlify.app/" target="_blank" rel="noopener noreferrer" class="project-link">View Project</a>
+                            <a href="https://github.com/faysel99905-web" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                <div style="color:red;" class="project-card">
                     <div class="project-image">
                         <div class="project-placeholder">
                             <i class="fas fa-user-circle"></i>
@@ -386,6 +471,57 @@
         </div>
     </footer>
 
+    <!-- PDF Viewer Modal -->
+    <div id="pdf-modal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3>Faisal Ali - CV</h3>
+                <div class="pdf-modal-controls">
+                    <a href="assets/Fissal_Ali_CV.pdf" download="Faisal-Ali-CV.pdf" class="pdf-download-btn">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                    <button class="pdf-close-btn" onclick="closePDFViewer()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="pdf-modal-body">
+                <iframe id="pdf-viewer" src="assets/Fissal_Ali_CV.pdf" type="application/pdf"></iframe>
+                <div class="pdf-fallback">
+                    <p>Your browser doesn't support PDF viewing. <a href="assets/Fissal_Ali_CV.pdf" download="Faisal-Ali-CV.pdf">Click here to download the CV</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Viewer Modal -->
+    <div id="certificate-modal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3>Web Development Certificate - Uni Coded</h3>
+                <div class="pdf-modal-controls">
+                    <a href="assets/Web-0006.pdf" download="Web-Development-Certificate.pdf" class="pdf-download-btn">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                    <button class="pdf-close-btn" onclick="closeCertificateViewer()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="pdf-modal-body">
+                <iframe id="certificate-viewer" src="assets/Web-0006.pdf" type="application/pdf"></iframe>
+                <div class="pdf-fallback">
+                    <p>Your browser doesn't support PDF viewing. <a href="assets/Web-0006.pdf" download="Web-Development-Certificate.pdf">Click here to download the certificate</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/StYndF9kblel09sL/scene.splinecode"></spline-viewer>
+</body> -->
 </body>
 </html>
