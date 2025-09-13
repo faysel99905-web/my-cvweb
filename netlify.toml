@@ -1,0 +1,14 @@
+[build]
+  # No build command needed for plain HTML
+  command = ""
+  # Publish from the root directory
+  publish = "."
+
+[build.environment]
+  # No special environment variables needed
+
+# Optional: Add redirects for better routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
